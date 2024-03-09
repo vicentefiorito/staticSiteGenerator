@@ -36,3 +36,28 @@ class LeafNode(HTMLNode):
     
     def __repr__(self):
         return f'LeafNode({self.tag},{self.value}.{self.props})'
+
+# ParentNode, a HTMLNode responsible for nesting the HTMLNodes inside of one another to create HTML strings
+# Any HTMLNode that's not a LeafNode, is a ParentNode
+class ParentNode(HTMLNode):
+    def __init__(self, tag,children, props=None):
+        super().__init__(tag, None, children, props)
+    
+    # recursive method
+    def to_html(self):
+        # base case
+        if self.tag is None:
+            raise ValueError('tag was not provided')
+        if self.children is None:
+            raise ValueError('All parent node require children')
+        
+        # recursive case
+        parent_str = f'<{self.tag}{self.props_to_html()}>'
+        for child in self.children:
+            parent_str += f'{child.to_html()}'
+        parent_str += f'</{self.tag}>'
+        
+        return parent_str
+
+    def __repr__(self):
+        return f'ParentNode({self.tag},{self.children},{self.props})'
