@@ -12,21 +12,23 @@ def split_nodes_delimiter(old_nodes,delimeter,text_type):
     # this is the list that is going to return after the delimeter
     new_nodes = []
     for old_node in old_nodes:
-        if not isinstance(old_node,TextNode):
+        if old_node.text_type != text_type_text:
             new_nodes.append(old_node)
-        # flag to keep track of the text type
-        is_original_text_type = True
+            continue
+        # list to take the slipt nodes of every node
+        split_node = []
         phrases = old_node.text.split(delimeter)
         # this checks for the edge case where there is no closing delimeter
-        if len(phrases) % 2 != 0:
+        if len(phrases) % 2 == 0:
             raise ValueError('Unmatched delimeter found in text.')
-        for phrase in phrases:
-            if is_original_text_type:
-                word = TextNode(phrase,old_node.text_type)
+        for i in range(len(phrases)):
+            if phrases[i] == "":
+                continue
+            if i % 2 == 0:
+                split_node.append(TextNode(phrases[i],text_type_text))
             else:
-                word = TextNode(phrase,text_type)
-            is_original_text_type = not is_original_text_type
-            new_nodes.append(word)
+                split_node.append(TextNode(phrases[i],text_type))
+        new_nodes.extend(split_node)
     return new_nodes
 
     
