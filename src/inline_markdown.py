@@ -1,3 +1,5 @@
+import re
+
 from textnode import (
     text_type_text,
     text_type_bold,
@@ -30,5 +32,20 @@ def split_nodes_delimiter(old_nodes,delimeter,text_type):
                 split_node.append(TextNode(phrases[i],text_type))
         new_nodes.extend(split_node)
     return new_nodes
+
+# takes raw text and return a list of tuples,
+# each tuple has the alt text and the URL of any markdown image
+def extract_markdown_images(text):
+    # regex to find the image
+    pattern = r"!\[(.*?)\]\((.*?)\)"
+    matches = re.findall(pattern,text)
+    return matches
+
+# takes raw text and return a list of tuples,
+# each tuple has the anchor text and the URL
+def extract_markdown_links(text):
+    pattern = r"\[(.*?)\]\((.*?)\)"
+    matches = re.findall(pattern,text)
+    return matches
 
     
