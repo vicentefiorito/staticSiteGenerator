@@ -52,7 +52,7 @@ def split_nodes_image(old_nodes):
                  new_nodes.append(TextNode(sections[0],text_type_text))
             new_nodes.append(TextNode(image[0],text_type_image,image[1],))
             original_text = sections[1]
-        if original_text == "":
+        if original_text != "":
             new_nodes.append(TextNode(original_text,text_type_text))
     return new_nodes
 
