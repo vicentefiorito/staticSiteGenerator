@@ -125,14 +125,15 @@ def code_to_html_node(block):
         raise ValueError('Invalid code block')
     text = block[4:-3]
     children = text_to_children(text)
-    return ParentNode('pre',ParentNode('code',children))
+    code = ParentNode('code',children)
+    return ParentNode('pre',[code])
 
 def unordered_list_to_html_node(block):
     items = block.split('\n')
     children_nodes = []
     for item in items:
         text = item[2:]
-        children = text_to_textnodes(text)
+        children = text_to_children(text)
         children_nodes.append(ParentNode('li',children))
     return ParentNode('ul',children_nodes)
 
@@ -141,16 +142,17 @@ def ordered_list_to_html_node(block):
     children_nodes = []
     for item in items:
         text = item[3:]
-        children = text_to_textnodes(text)
+        children = text_to_children(text)
         children_nodes.append(ParentNode('li',children))
     return ParentNode('ol',children_nodes)
 
 def quote_to_html_node(block):
-    lines = block.split('\n')
-    children = []
+    lines = block.split("\n")
+    new_lines = []
     for line in lines:
-        if not line.startswith('>'):
-            raise ValueError('invalid quote block')
-        line_text = line.lstrip('>').strip
-        children.extend(text_to_children(line_text))
-    return ParentNode('blockquote',children)
+        if not line.startswith(">"):
+            raise ValueError("Invalid quote block")
+        new_lines.append(line.lstrip(">").strip())
+    content = " ".join(new_lines)
+    children = text_to_children(content)
+    return ParentNode("blockquote", children)

@@ -24,8 +24,8 @@ def generate_page(from_path, template_path,dest_path):
 
     # extracts the title of the markdown
     title = extract_title(markdown_content)
-    template = template.replace('{{Title}}',title)
-    template = template.replace('{{Content}}',html)
+    template = template.replace('{{ Title }}',title)
+    template = template.replace('{{ Content }}',html)
 
     # writes the new HTML to a file at dest_path
     dest_dir_path = os.path.dirname(dest_path)
